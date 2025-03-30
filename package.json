@@ -1,0 +1,7 @@
+{
+  "name":"github-activity",
+  "version": "1.0.0",
+  "bin":{
+    "github-activity":"github-activity.js"
+  }
+}
