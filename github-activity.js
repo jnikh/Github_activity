@@ -3,11 +3,11 @@
 const https = require('https');
 const readline = require('readline');
 
-// Configuration
-const REFRESH_INTERVAL = 30000; // 30 seconds
-const MAX_EVENTS = 20; // Maximum events to display
 
-// Colors for console output
+const REFRESH_INTERVAL = 30000; // 30 seconds
+const MAX_EVENTS = 30; // Maximum events to display
+
+
 const colors = {
   reset: '\x1b[0m',
   event: '\x1b[36m', // Cyan
@@ -30,10 +30,10 @@ async function main() {
     
     console.log(`\n${colors.action}Tracking GitHub activity for ${username}${colors.reset}\n`);
     
-    // Initial fetch
+  
     await fetchAndDisplayEvents(username);
     
-    // Refresh mode
+    
     if (refreshMode) {
       setInterval(async () => {
         await fetchAndDisplayEvents(username);
@@ -112,29 +112,29 @@ function displayActivity(events) {
 
   console.log(`${colors.action}Recent activity:${colors.reset}\n`);
 
-  // Track seen events to avoid duplicates
+  
   const seenEvents = new Set();
   let displayedCount = 0;
 
   events.forEach(event => {
     try {
-      // Skip duplicates
+      
       if (seenEvents.has(event.id)) return;
       seenEvents.add(event.id);
       
-      // Limit displayed events
+     
       if (displayedCount++ >= MAX_EVENTS) return;
 
       const { type, repo, payload, created_at } = event;
       const date = new Date(created_at).toLocaleTimeString();
       
-      // Handle repo name
+     
       let repoName = 'unknown repository';
       if (repo) {
         repoName = typeof repo === 'object' ? repo.name : repo;
       }
 
-      // Format output
+      
       const repoDisplay = `${colors.repo}${repoName}${colors.reset}`;
       const timeDisplay = `[${colors.number}${date}${colors.reset}]`;
       const eventDisplay = `${colors.event}${type}${colors.reset}`;
@@ -181,7 +181,6 @@ function displayActivity(events) {
 
 function clearConsole() {
   if (process.stdout.isTTY) {
-    // For terminal environments
     const blank = '\n'.repeat(process.stdout.rows);
     console.log(blank);
     readline.cursorTo(process.stdout, 0, 0);
